@@ -20,6 +20,9 @@ class Skill(models.Model):
     s_name = models.CharField(max_length=500)
     s_level = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.s_name
+
 
 class Experince(models.Model):
     cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
@@ -27,7 +30,7 @@ class Experince(models.Model):
     e_position = models.CharField(max_length=500)
     e_duration = models.CharField(max_length=500)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.s_name
 
 
@@ -37,7 +40,7 @@ class Academic(models.Model):
     a_year = models.CharField(max_length=500)
     a_award = models.CharField(max_length=500)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.a_institution
 
 
@@ -47,7 +50,7 @@ class Referee(models.Model):
     r_email = models.CharField(max_length=500)
     r_phone = models.CharField(max_length=500)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.r_name
 
 
@@ -67,7 +70,7 @@ class Profile(models.Model):
     avator = models.ImageField(
         upload_to='profile/', default='profile/avator.png', null=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.fname
 
     def delete(self, *args, **kwargs):
