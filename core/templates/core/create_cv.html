@@ -16,13 +16,11 @@
 
 
 
-
-
             {% if status == 'no_profile' %}
             <p class="text-danger">After Creating A Profile, You Can Start Filling Other details. Like education background and Referees</p>
             <h1 class="card">Provide Basic Provide Information</h1>
             <form class="uform" method="POST" enctype="multipart/form-data">
-
+              {% csrf_token %}
 
               <div  class="form-group">
                   <div class="row"  >
