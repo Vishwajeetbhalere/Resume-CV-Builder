@@ -29,6 +29,7 @@ Resume-CV-Builder is a web application designed to help users create, manage, an
 - **AJAX**: For asynchronous data updates and dynamic user interactions
 - **PDF Generation**: Utilizes libraries to convert resume content into a downloadable PDF format
 - **ORM**: Django ORM for efficient database management
+- **Database**: SQLite for storing user data and resume details
 
 ## Getting Started
 
@@ -82,10 +83,6 @@ We welcome contributions! Please follow these steps to contribute:
 3. Commit your changes (`git commit -m 'Add some feature'`).
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
