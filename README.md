@@ -36,8 +36,8 @@ Resume-CV-Builder is a web application designed to help users create, manage, an
 ### Prerequisites
 
 Ensure you have the following installed on your system:
-- Python 3.x
-- Django
+- Python 3.7.16
+- Django  5.0.6
 - Other dependencies as listed in `requirements.txt`
 
 ### Installation
