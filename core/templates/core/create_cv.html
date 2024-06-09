@@ -2,26 +2,23 @@
 {% load static %}
 
 <div id="content-wrapper" class="mt-4" style="padding-top: 1%;">
-     <div class="container-fluid">
-       <div class="mb-2 col-md-12">
-           
+    <div class="container-fluid">
+    <div class="mb-2 col-md-12">
+        
         <div class="row">
-         <div class="col-md-2" >
+        <div class="col-md-2" >
             
-         </div>
-         <div class="col-md-8">
-             
-             <h3 class="card text-primary">Click On Add, To Add Form Then Fill In Your Details And Submit</h3>
-             <br/>
+        </div>
+        <div class="col-md-8">
+            
+            <h3 class="card text-primary">Click On Add, To Add Form Then Fill In Your Details And Submit</h3>
+            <br/>
 
-
-
-
-
-             {% if status == 'no_profile' %}
-             <p class="text-danger">After Creating A Profile, You Can Start Filling Other details. Like education background and Referees</p>
-             <h1 class="card">Provide Basic Provide Information</h1>
-             <form class="uform" method="POST" enctype="multipart/form-data">
+            
+            {% if status == 'no_profile' %}
+            <p class="text-danger">After Creating A Profile, You Can Start Filling Other details. Like education background and Referees</p>
+            <h1 class="card">Provide Basic Provide Information</h1>
+            <form class="uform" method="POST" enctype="multipart/form-data">
 
 
                 <div  class="form-group">
@@ -80,7 +77,6 @@
                             </div>
 
 
-
                             <div  class="form-group">
                                 <div class="row"  >
                                 <div class="col" >
@@ -113,18 +109,17 @@
 
             <button id="profile_save" class="btn btn-primary">Save</button>
 
-             </form>
-             
-             {% else %}
+            </form>
+            
+            {% else %}
 
 
+            <br/>
+            <h1 class="card">Add Professional Skills Form</h1>
 
-             <br/>
-             <h1 class="card">Add Professional Skills Form</h1>
-
-             <form class="form_skill" method="POST">
-                 {% csrf_token %} 
-             <div id="wrapper_skill">
+            <form class="form_skill" method="POST">
+                {% csrf_token %} 
+            <div id="wrapper_skill">
 
                 <div class="form-group">
                     <div class="row" >
@@ -133,33 +128,32 @@
                         <input  type="Enter Your Skill" id="s_name" name="s_name" class="form-control" />
                     </div>
                     <div class="col" >
-                   <label>Level of your skill</label>
-                   <select   name="s_level" id="s_level" class="form-control">
-                       <option value="">Choose Your Level</option>
-                       <option value="Beginner">Beginner</option>
-                       <option value="Intermediate">Intermediate</option>
-                       <option value="Advanced">Advanced</option>
-                   </select>
-                   </div>
+                <label>Level of your skill</label>
+                <select   name="s_level" id="s_level" class="form-control">
+                    <option value="">Choose Your Level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+                </div>
 
-                   <div class="skill_del_btn col" style="padding-top: 30px;">
-                   <button id="skill_add" class="btn btn-success" >Add More</button>
-                   </div>
+                <div class="skill_del_btn col" style="padding-top: 30px;">
+                <button id="skill_add" class="btn btn-success" >Add More</button>
+                </div>
                     </div>
                 </div>
-             </div>
-              
-             <br/>
-             <div class="row">
+            </div>
+            
+            <br/>
+            <div class="row">
                 <div class="col-md-1">
-                   <button id="skill_save" class="btn btn-primary">Save</button>
+                <button id="skill_save" class="btn btn-primary">Save</button>
                 </div>
 
             </div>
             </form>
 
             <br/>
-
 
             <h1 class="card">Add Education Background Form</h1>
             <form class="form_edu" method="POST">
@@ -169,22 +163,19 @@
             <br/>
             <div class="row">
                 <div class="col-md-1">
-                   <button id="edu_save" class="btn btn-primary">Save</button>
+                <button id="edu_save" class="btn btn-primary">Save</button>
                 </div>
 
                 <div class="col-md-1">
-                   <button id="edu_add" class="btn btn-success">Add Form</button>
+                <button id="edu_add" class="btn btn-success">Add Form</button>
                 </div>
 
             </div>
             </form>
 
-
-
-
             <br/>
             <h1 class="card">Add Referees Information Form</h1>
-              
+            
             <form class="form_ref" method="POST">
                 {% csrf_token %} 
             <div id="wrapper_ref"></div>
@@ -192,45 +183,31 @@
             <br/>
             <div class="row">
                 <div class="col-md-1">
-                   <button id="ref_save" class="btn btn-primary">Save</button>
+                <button id="ref_save" class="btn btn-primary">Save</button>
                 </div>
 
                 <div class="col-md-1">
-                   <button id="ref_add" class="btn btn-success">Add Form</button>
+                <button id="ref_add" class="btn btn-success">Add Form</button>
                 </div>
 
             </div>
             </form>
 
-             
+            {% endif %}
 
-             {% endif %}
-
-           
+        
             </div>
 
-
-
-
-
-
-             
-
-             
-
-         </div>
-         <div class="col-md-2">
-             
-         </div>
+        </div>
+        <div class="col-md-2">
+            
+        </div>
         </div>
 
+    </div>
 
-
-
-       </div>
-
-       
-     </div>
+    
+    </div>
 </div>
 
 {% include 'core/create_cv_script.html' %}

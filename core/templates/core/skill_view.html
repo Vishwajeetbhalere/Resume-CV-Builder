@@ -1,0 +1,110 @@
+<h1>Skill Template</h1>
+
+
+{% include 'core/navbar.html' %}
+{% load static %}
+
+<div id="content-wrapper" class="mt-4" style="padding-top: 1%;">
+    <div class="container-fluid">
+    <div class="mb-2 col-md-6">
+        
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Level</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <input type="hidden" value={{request.user.cv.id}} id="cv_id">
+
+                    {% if user_skill %}
+                    {% for skill in user_skill %}
+
+                    <tr>
+                        
+            
+                        <td>
+                        {{ skill.s_name }}
+                        </td>
+
+                        <td>
+                            {{ skill.s_level }}
+                        </td>
+
+                        <td>
+
+                            
+                            <input class="btn btn-warning btn-sm btn-edit" data-id="{{skill.id}}" value="Edit" type="button"> 
+                        </td>
+
+                        <td>
+                            <input class="btn btn-danger btn-sm btn-delete" data-id="{{skill.id}}" value="Delete" type="button"> 
+                        </td>
+                    </tr>
+
+
+                    {% endfor %}
+                    {% endif %}
+                    
+                </tbody>
+
+            </table>
+        
+    </div>
+
+    <div id="save_skill_status"></div>
+
+
+
+    <br/>
+    <br/>
+
+
+
+    <div class="update_academic_info" style="display: none;">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Level</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <input type="hidden"  id="academic_id">
+
+                <tr>
+        
+                    <td>
+                    <input type="text"  id="s_name" class="form-control"/>
+                    </td>
+
+                    <td>
+                        <input type="text"  id="s_level" class="form-control"/>
+                    </td>
+
+                </tr>
+                
+            </tbody>
+
+        </table>
+
+        <button class="btn btn-success" id="save_skill">Update</button>
+
+        <button class="btn btn-info" id="close_skill">Close</button>
+
+    
+</div>
+</div>
+
+
+
+    </div>
+</div>
+
+
+{% include 'core/edit_cv_script.html' %}

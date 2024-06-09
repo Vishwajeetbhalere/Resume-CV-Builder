@@ -285,6 +285,18 @@ def fetchAcademic(request):
     return JsonResponse(user_education)
 
 
+def fetchSkill(request):
+    id = request.POST.get('id')
+    print('Cv ID is', id)
+
+    user_skill = Skill.object.get(id=id)
+
+    user_skill = {'s_name': user_skill.s_nam,
+                  's_level': user_skill.s_level}
+
+    return JsonResponse(user_skill)
+
+
 def deleteProfile(request):
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -315,6 +327,14 @@ def educationView(request):
     user_education = Academic.objects.filter(cv_id=id).all()
     context = {'user_education': user_education}
     return render(request, 'core/education_view.html', context)
+
+
+def SkillView(request):
+    id = request.user.cv.id
+    print('Cv ID is', id)
+    user_skill = Skill.objects.filter(cv_id=id).all()
+    context = {'user_skill': user_skill}
+    return render(request, 'core/skill_view.html', context)
 
 
 def generate_PDF(request, id):

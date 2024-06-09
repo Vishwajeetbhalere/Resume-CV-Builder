@@ -17,13 +17,13 @@
                 </thead>
                 <tbody>
                     <input type="hidden" value={{request.user.cv.id}} id="cv_id">
+
+                    {% comment %}todo Profile  {% endcomment %}
                     <tr>
                         <td>Profile</td>
                         <td>
                             <a href=""><button class="btn btn-primary" id="profile_click">Edit</button></a>
                         </td>
-
-
                         <td>
                             <a href="{% url 'cv-detail'  id=request.user.cv.id %}"><button class="btn btn-success">View</button></a>
                         </td>
@@ -31,6 +31,22 @@
                             <a href=""><button class="btn btn-danger" id="del_btn">Delete</button></a>
                         </td>
                     </tr>
+
+                    {% comment %}todo Skill  {% endcomment %}
+                    <tr>
+                        <td>Skills</td>
+                        <td>
+                            <a href="{% url "skill-view" %}"><button class="btn btn-primary" id="edu_click">Edit</button></a>
+                        </td>
+                        <td>
+                            <a href="{% url 'cv-detail'  id=request.user.cv.id %}"><button class="btn btn-success">View</button></a>
+                        </td>
+                        <td>
+                            <a href=""><button class="btn btn-danger">Delete</button></a>
+                        </td>
+                    </tr>
+
+                    {% comment %}todo Education  {% endcomment %}
                     <tr>
                         <td>Education Background</td>
                         <td>
@@ -43,10 +59,12 @@
                             <a href=""><button class="btn btn-danger">Delete</button></a>
                         </td>
                     </tr>
+
+                    {% comment %}todo Referees  {% endcomment %}
                     <tr>
                         <td>Referees</td>
                         <td>
-                            <a href=""><button class="btn btn-primary">Edit</button></a>
+                            <a href=""><button class="btn btn-primary" id="ref_click">Edit</button></a>
                         </td>
 
                         <td>

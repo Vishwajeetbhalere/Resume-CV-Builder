@@ -36,17 +36,25 @@
                 }
             })
 
+            $.ajax({
+                url: "{% url 'fetchskill' %}",
+                method: "POST",
+                data:data,
 
+                success: function(data){
+                    console.log(data);
+                    $('#s_name').val(data.s_name);
+                    $('#s_level').val(data.s_level);
+
+                    
+                }
+            })
 
         })
 
-
-
-
-
         $('#save_academic').click(function(e){
             e.preventDefault()
-             let id = $('#academic_id').val()
+            let id = $('#academic_id').val()
 
             console.log('Save Education ID is',id)
 
@@ -73,11 +81,7 @@
                 }
             })
 
-
-
         })
-
-
 
 
         $('.btn-delete').click(function(e){
@@ -105,8 +109,6 @@
         })
 
 
-
-
         $('#del_btn').click(function(e){
             e.preventDefault()
 
@@ -119,7 +121,6 @@
                 method: "POST",
                 data:data,
 
-
                 success: function(){
                     $('#result_result').html('');
                     $('#update_result').append('Profile Deleted Successfully');
@@ -130,8 +131,6 @@
 
         })
 
-
-        
 
         $('#profile_close').click(function(e){
             e.preventDefault()
