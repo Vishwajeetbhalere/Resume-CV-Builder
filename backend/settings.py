@@ -141,3 +141,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+
+WKHTMLTOPDF_CMD = '/usr/local/bin/wkhtmltopdf'
