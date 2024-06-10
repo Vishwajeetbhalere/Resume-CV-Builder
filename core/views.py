@@ -180,6 +180,17 @@ def updateAcademic(request):
     return JsonResponse({'status': 1})
 
 
+def updateSkill(request):
+    id = request.POST.get('id')
+    level = request.POST.get('level')
+    name = request.POST.get('name')
+
+    Skill.objects.filter(id=id).update(
+        s_level=level, s_name=name,)
+
+    return JsonResponse({'status': 1})
+
+
 def updateProfile(request):
     id = request.POST.get('id')
     fname = request.POST.get('fname')
@@ -289,9 +300,9 @@ def fetchSkill(request):
     id = request.POST.get('id')
     print('Cv ID is', id)
 
-    user_skill = Skill.object.get(id=id)
+    user_skill = Skill.objects.get(id=id)
 
-    user_skill = {'s_name': user_skill.s_nam,
+    user_skill = {'s_name': user_skill.s_name,
                   's_level': user_skill.s_level}
 
     return JsonResponse(user_skill)
@@ -316,6 +327,18 @@ def deleteAcademic(request):
 
         user_education = Academic.objects.get(id=id)
         user_education.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
+def deleteSkill(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_skill = Skill.objects.get(id=id)
+        user_skill.delete()
         return JsonResponse({'status': 1})
     else:
         return JsonResponse({'status': 0})

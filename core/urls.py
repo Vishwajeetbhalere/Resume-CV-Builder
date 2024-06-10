@@ -33,5 +33,9 @@ urlpatterns = [
     # ^ Skill view, fetch, update, delete
     path('cv-edit/skillview/', views.SkillView, name="skill-view"),
     path("cv-edit/skillview/skill", views.fetchSkill, name="fetchskill"),
+    path('cv-edit/eduview/update_skill/',
+         views.updateSkill, name="update_skill"),
+    path('cv-edit/eduview/delete_academic/',
+         views.deleteSkill, name="delete_skill"),
 
 ]

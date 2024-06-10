@@ -6,9 +6,15 @@
             e.preventDefault()
             $('.update_academic_info').hide()
         })
+
+
+        $('#close_skill').click(function(e){
+            e.preventDefault()
+            $('.update_skill_info').hide()
+        })
         
 
-        $('.btn-edit').click(function(e){
+        $('.btn-edit-academic').click(function(e){
             e.preventDefault()
             let id = $(this).attr("data-id");
             console.log('Education ID is',id)
@@ -36,6 +42,24 @@
                 }
             })
 
+
+
+        })
+
+
+        $('.btn-edit-skill').click(function(e){
+            e.preventDefault()
+            let id = $(this).attr("data-id");
+            console.log('Skill ID is',id)
+
+
+            $('#skill_id').val(id)
+
+            $('.update_skill_info').show()
+
+            data = {id:id, csrfmiddlewaretoken:'{{ csrf_token }}'}
+
+
             $.ajax({
                 url: "{% url 'fetchskill' %}",
                 method: "POST",
@@ -43,18 +67,23 @@
 
                 success: function(data){
                     console.log(data);
-                    $('#s_name').val(data.s_name);
-                    $('#s_level').val(data.s_level);
+                    $('#name').val(data.name);
+                    $('#level').val(data.level);
 
                     
                 }
             })
 
+
+
         })
+
+
+
 
         $('#save_academic').click(function(e){
             e.preventDefault()
-            let id = $('#academic_id').val()
+             let id = $('#academic_id').val()
 
             console.log('Save Education ID is',id)
 
@@ -81,10 +110,47 @@
                 }
             })
 
+
+
         })
 
 
-        $('.btn-delete').click(function(e){
+
+        $('#save_skill').click(function(e){
+            e.preventDefault()
+             let id = $('#skill_id').val()
+
+            console.log('Save Skill ID is',id)
+
+            $('.update_skill_info').show()
+            let name = $('#name').val()
+            let level = $('#level').val()
+
+
+            data = {id:id, csrfmiddlewaretoken:'{{ csrf_token }}', name:name, level:level}
+
+
+            $.ajax({
+                url: "{% url 'update_skill' %}",
+                method: "POST",
+                data:data,
+
+                success: function(){
+                    $('#save_skill_status').html('');
+                    $('.update_skill_info').hide()
+                    $('#save_skill_status').append('Skill Information Updated Successfully');
+                    
+                }
+            })
+
+
+
+        })
+
+
+
+
+        $('.btn-delete-academic').click(function(e){
             e.preventDefault()
             let id = $(this).attr("data-id");
             console.log('Education ID is',id)
@@ -109,6 +175,34 @@
         })
 
 
+
+        $('.btn-delete-skill').click(function(e){
+            e.preventDefault()
+            let id = $(this).attr("data-id");
+            console.log('Skill ID is',id)
+
+
+            data = {id:id, csrfmiddlewaretoken:'{{ csrf_token }}'}
+
+
+            $.ajax({
+                url: "{% url 'delete_skill' %}",
+                method: "POST",
+                data:data,
+
+                success: function(){
+                    $('#save_skill_status').html('');
+                    $('#save_skill_status').append('Sill Information Deleted Successfully');
+                }
+            })
+
+
+
+        })
+
+
+
+
         $('#del_btn').click(function(e){
             e.preventDefault()
 
@@ -121,6 +215,7 @@
                 method: "POST",
                 data:data,
 
+
                 success: function(){
                     $('#result_result').html('');
                     $('#update_result').append('Profile Deleted Successfully');
@@ -131,6 +226,8 @@
 
         })
 
+
+        
 
         $('#profile_close').click(function(e){
             e.preventDefault()

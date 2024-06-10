@@ -143,4 +143,4 @@ INTERNAL_IPS = [
 ]
 
 
-WKHTMLTOPDF_CMD = '/usr/local/bin/wkhtmltopdf'
+WKHTMLTOPDF_CMD = "/usr/local/bin/wkhtmltopdf"
