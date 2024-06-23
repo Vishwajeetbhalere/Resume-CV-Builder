@@ -1,3 +1,4 @@
+import pdfkit
 from fileinput import filename
 from django.http import HttpResponse, JsonResponse, response
 from django.shortcuts import render, redirect, reverse
@@ -5,13 +6,16 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from django.template import context
-from .models import Skill, Academic, Referee, Profile, User, Skill, Cv
+from .models import Skill, Academic, Referee, Profile, User, Skill, Cv, Experience, Project, Certificate
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.hashers import make_password
-import pdfkit
+from django.urls import path
+from pdfkit import from_url
 
 
+# Create your views here.
 def index(request):
+    # return HttpResponse('hi')
     return render(request, 'core/index.html')
 
 
@@ -49,7 +53,6 @@ def dashboard(request):
 
 def createCv(request):
     user_id = request.user.id
-
     try:
         cv_id = Cv.objects.filter(user_id=user_id).values_list('id', flat=True)
         cv_id = list(cv_id)
@@ -115,6 +118,81 @@ def saveEducation(request):
     return JsonResponse({'status': 0})
 
 
+def saveCertificate(request):
+    if request.method == 'POST':
+        name = request.POST.getlist('name[]')
+        year = request.POST.getlist('year[]')
+
+        user_id = request.user.id
+        cv_id = Cv.objects.filter(user_id=user_id).values_list('id', flat=True)
+        cv_id = list(cv_id)
+        cv_id = cv_id[0]
+
+        if (len(name) == 1):
+            a = Certificate(c_certificate=name[0], c_year=year[0], cv_id=cv_id)
+            a.save()
+            return JsonResponse({'status': 1})
+        else:
+            for x, y in zip(name, year):
+                a = Certificate(c_certificate=x, c_year=y, cv_id=cv_id)
+                a.save()
+            return JsonResponse({'status': 1})
+    return JsonResponse({'status': 0})
+
+
+def saveExperience(request):
+    if request.method == 'POST':
+        name = request.POST.getlist('name[]')
+        position = request.POST.getlist('position[]')
+        responsibilities = request.POST.getlist('responsibilities[]')
+        startdate = request.POST.getlist('startdate[]')
+        enddate = request.POST.getlist('enddate[]')
+
+        user_id = request.user.id
+        cv_id = Cv.objects.filter(user_id=user_id).values_list('id', flat=True)
+        cv_id = list(cv_id)
+        cv_id = cv_id[0]
+
+        if (len(name) == 1):
+            a = Experience(e_office=name[0], e_position=position[0], e_responsibilities=responsibilities[0],
+                           e_startdate=startdate[0], e_enddate=enddate[0], cv_id=cv_id)
+            a.save()
+            return JsonResponse({'status': 1})
+        else:
+            for x, y, z, w, v in zip(name, position, responsibilities, startdate, enddate):
+                a = Experience(e_office=x, e_position=y, e_responsibilities=z,
+                               e_startend=w, e_enddate=v, cv_id=cv_id)
+                a.save()
+            return JsonResponse({'status': 1})
+    return JsonResponse({'status': 0})
+
+
+def saveProject(request):
+    if request.method == 'POST':
+        name = request.POST.getlist('name[]')
+        description = request.POST.getlist('description[]')
+        startdate = request.POST.getlist('startdate[]')
+        enddate = request.POST.getlist('enddate[]')
+
+        user_id = request.user.id
+        cv_id = Cv.objects.filter(user_id=user_id).values_list('id', flat=True)
+        cv_id = list(cv_id)
+        cv_id = cv_id[0]
+
+        if (len(name) == 1):
+            a = Project(p_projectname=name[0], p_description=description[0],
+                        p_startdate=startdate[0], p_enddate=enddate[0], cv_id=cv_id)
+            a.save()
+            return JsonResponse({'status': 1})
+        else:
+            for x, y, z, w in zip(name, description, startdate, enddate):
+                a = Project(p_projectname=x, p_description=y,
+                            p_startdate=z, p_enddate=w, cv_id=cv_id)
+                a.save()
+            return JsonResponse({'status': 1})
+    return JsonResponse({'status': 0})
+
+
 def saveReferee(request):
     if request.method == 'POST':
         name = request.POST.getlist('name[]')
@@ -127,8 +205,8 @@ def saveReferee(request):
         cv_id = cv_id[0]
 
         if (len(name) == 1):
-            a = Referee(r_name=name[0], r_email=email[0],
-                        r_phone=phone[0], cv_id=cv_id)
+            a = Referee(r_name=name[0], r_phone=phone[0],
+                        r_email=email[0], cv_id=cv_id)
             a.save()
             return JsonResponse({'status': 1})
         else:
@@ -159,12 +237,31 @@ def uploadProfile(request):
     cv_id = Cv.objects.filter(user_id=user_id).values_list('id', flat=True)
     cv_id = list(cv_id)
     cv_id = cv_id[0]
-    print('Cv ID is', cv_id)
+    print('Cv Id is', cv_id)
 
     p = Profile(fname=fname, mname=mname, lname=lname, email=email, bio=bio, dob=dob, gender=gender,
                 occupation=occupation, country=country, region=region, avator=file, phone=phone, cv_id=cv_id)
     p.save()
+    return JsonResponse({'status': 1})
 
+
+def updateSkill(request):
+    id = request.POST.get('id')
+    name = request.POST.get('name')
+    level = request.POST.get('level')
+
+    Skill.objects.filter(id=id).update(s_name=name, s_level=level)
+    return JsonResponse({'status': 1})
+
+
+def updateReferee(request):
+    id = request.POST.get('id')
+    name = request.POST.get('name')
+    phone = request.POST.get('phone')
+    email = request.POST.get('email')
+
+    Referee.objects.filter(id=id).update(
+        r_name=name, r_phone=phone, r_email=email)
     return JsonResponse({'status': 1})
 
 
@@ -176,18 +273,40 @@ def updateAcademic(request):
 
     Academic.objects.filter(id=id).update(
         a_institution=institution, a_year=year, a_award=award)
-
     return JsonResponse({'status': 1})
 
 
-def updateSkill(request):
+def updateCertificate(request):
     id = request.POST.get('id')
-    level = request.POST.get('level')
-    name = request.POST.get('name')
+    certificate = request.POST.get('certificate')
+    year = request.POST.get('year')
+    Certificate.objects.filter(id=id).update(
+        c_certificate=certificate, c_year=year)
+    return JsonResponse({'status': 1})
 
-    Skill.objects.filter(id=id).update(
-        s_level=level, s_name=name,)
 
+def updateExperience(request):
+    id = request.POST.get('id')
+    office = request.POST.get('office')
+    position = request.POST.get('position')
+    responsibilities = request.POST.get('responsibilities')
+    startdate = request.POST.get('startdate')
+    enddate = request.POST.get('enddate')
+
+    Experience.objects.filter(id=id).update(e_office=office, e_position=position,
+                                            e_responsibilities=responsibilities, e_startdate=startdate, e_enddate=enddate)
+    return JsonResponse({'status': 1})
+
+
+def updateProject(request):
+    id = request.POST.get('id')
+    projectname = request.POST.get('projectname')
+    description = request.POST.get('description')
+    startdate = request.POST.get('startdate')
+    enddate = request.POST.get('enddate')
+
+    Project.objects.filter(id=id).update(p_projectname=projectname,
+                                         p_description=description, p_startdate=startdate, p_enddate=enddate)
     return JsonResponse({'status': 1})
 
 
@@ -213,7 +332,6 @@ def updateProfile(request):
 
     Profile.objects.filter(cv_id=id).update(fname=fname, mname=mname, lname=lname, email=email, bio=bio, dob=dob,
                                             gender=gender, occupation=occupation, country=country, region=region, avator=file, phone=phone, cv_id=cv_id)
-
     return JsonResponse({'status': 1})
 
 
@@ -231,13 +349,13 @@ def registerView(request):
             messages.error(request, 'Username is already taken')
             return redirect('reg-form')
         elif (check_email > 0):
-            messages.error(request, 'Email is already taken')
-            return redirect('reg-form')
+            messages.error(request, 'Email is a already taken')
+            return redirect('reg_form')
         else:
             User.objects.create(username=username,
                                 email=email, password=password)
             messages.success(
-                request, 'Account created successfully, Please Sign In')
+                request, "Account created successfully, Please Sign In")
             return redirect('reg-form')
     else:
         return render(request, 'core/register.html')
@@ -253,9 +371,12 @@ def viewPDF(request, id=None):
     user_skill = Skill.objects.filter(cv_id=id).values()
     user_referee = Referee.objects.filter(cv_id=id).values()
     user_education = Academic.objects.filter(cv_id=id).values()
+    user_experience = Experience.objects.filter(cv_id=id).values()
+    user_project = Project.objects.filter(cv_id=id).values()
+    user_certificate = Certificate.objects.filter(cv_id=id).values()
 
-    context = {'user_profile': user_profile, 'user_skill': user_skill,
-               'user_referee': user_referee, 'user_education': user_education}
+    context = {'user_profile': user_profile, 'user_skill': user_skill, 'user_referee': user_referee, 'user_education': user_education,
+               'user_experience': user_experience, 'user_project': user_project, 'user_certificate': user_certificate}
     return render(request, 'core/pdf_template.html', context)
 
 
@@ -266,7 +387,6 @@ def editCv(request):
 def fetchProfile(request):
     id = request.POST.get('id')
     print('Cv ID is', id)
-
     user_profile = Profile.objects.get(cv_id=id)
 
     user_profile = {'fname': user_profile.fname,
@@ -285,7 +405,7 @@ def fetchProfile(request):
 
 def fetchAcademic(request):
     id = request.POST.get('id')
-    print('Cv ID is', id)
+    print('CV ID is', id)
 
     user_education = Academic.objects.get(id=id)
 
@@ -296,37 +416,76 @@ def fetchAcademic(request):
     return JsonResponse(user_education)
 
 
+def fetchCertificate(request):
+    id = request.POST.get('id')
+    print('CV ID is', id)
+
+    user_certificate = Certificate.objects.get(id=id)
+
+    user_certificate = {'certificate': user_certificate.c_certificate,
+                        'year': user_certificate.c_year,
+                        }
+    return JsonResponse(user_certificate)
+
+
+def fetchExperience(request):
+    id = request.POST.get('id')
+    print('CV ID is', id)
+
+    user_experience = Experience.objects.get(id=id)
+
+    user_experience = {'office': user_experience.e_office,
+                       'position': user_experience.e_position,
+                       'responsibilities': user_experience.e_responsibilities,
+                       'startdate': user_experience.e_startdate,
+                       'enddate': user_experience.e_enddate
+                       }
+    return JsonResponse(user_experience)
+
+
+def fetchProject(request):
+    id = request.POST.get('id')
+    print('CV ID is', id)
+
+    user_project = Project.objects.get(id=id)
+
+    user_project = {'projectname': user_project.p_projectname,
+                    'description': user_project.p_description,
+                    'startdate': user_project.p_startdate,
+                    'enddate': user_project.p_enddate,
+                    }
+    return JsonResponse(user_project)
+
+
 def fetchSkill(request):
     id = request.POST.get('id')
     print('Cv ID is', id)
 
     user_skill = Skill.objects.get(id=id)
-
-    user_skill = {'s_name': user_skill.s_name,
-                  's_level': user_skill.s_level}
-
+    user_skill = {'name': user_skill.s_name,
+                  'level': user_skill.s_level}
     return JsonResponse(user_skill)
+
+
+def fetchReferee(request):
+    id = request.POST.get('id')
+    print('Cv ID is', id)
+
+    user_referee = Referee.objects.get(id=id)
+    user_referee = {'name': user_referee.r_name,
+                    'phone': user_referee.r_phone,
+                    'email': user_referee.r_email
+                    }
+    return JsonResponse(user_referee)
 
 
 def deleteProfile(request):
     if request.method == 'POST':
         id = request.POST.get('id')
-        print('Cv ID is', id)
+        print('Cv ID is ', id)
 
         user_profile = Profile.objects.get(cv_id=id)
         user_profile.delete()
-        return JsonResponse({'status': 1})
-    else:
-        return JsonResponse({'status': 0})
-
-
-def deleteAcademic(request):
-    if request.method == 'POST':
-        id = request.POST.get('id')
-        print('Cv ID is', id)
-
-        user_education = Academic.objects.get(id=id)
-        user_education.delete()
         return JsonResponse({'status': 1})
     else:
         return JsonResponse({'status': 0})
@@ -344,6 +503,66 @@ def deleteSkill(request):
         return JsonResponse({'status': 0})
 
 
+def deleteReferee(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_referee = Referee.objects.get(id=id)
+        user_referee.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
+def deleteAcademic(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_education = Academic.objects.get(id=id)
+        user_education.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
+def deleteCertificate(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_certificate = Certificate.objects.get(id=id)
+        user_certificate.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
+def deleteExperience(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_experience = Experience.objects.get(id=id)
+        user_experience.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
+def deleteProject(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print('Cv ID is', id)
+
+        user_project = Project.objects.get(id=id)
+        user_project.delete()
+        return JsonResponse({'status': 1})
+    else:
+        return JsonResponse({'status': 0})
+
+
 def educationView(request):
     id = request.user.cv.id
     print('Cv ID is', id)
@@ -352,12 +571,44 @@ def educationView(request):
     return render(request, 'core/education_view.html', context)
 
 
-def SkillView(request):
+def certificateView(request):
+    id = request.user.cv.id
+    print('Cv ID is', id)
+    user_certificate = Certificate.objects.filter(cv_id=id).all()
+    context = {'user_certificate': user_certificate}
+    return render(request, 'core/certificate_view.html', context)
+
+
+def experienceView(request):
+    id = request.user.cv.id
+    print('Cv ID is', id)
+    user_experience = Experience.objects.filter(cv_id=id).all()
+    context = {'user_experience': user_experience}
+    return render(request, 'core/experience_view.html', context)
+
+
+def projectView(request):
+    id = request.user.cv.id
+    print('Cv ID is', id)
+    user_project = Project.objects.filter(cv_id=id).all()
+    context = {'user_project': user_project}
+    return render(request, 'core/project_view.html', context)
+
+
+def skillView(request):
     id = request.user.cv.id
     print('Cv ID is', id)
     user_skill = Skill.objects.filter(cv_id=id).all()
     context = {'user_skill': user_skill}
     return render(request, 'core/skill_view.html', context)
+
+
+def refereeView(request):
+    id = request.user.cv.id
+    print('Cv ID is', id)
+    user_referee = Referee.objects.filter(cv_id=id).all()
+    context = {'user_referee': user_referee}
+    return render(request, 'core/referee_view.html', context)
 
 
 def generate_PDF(request, id):

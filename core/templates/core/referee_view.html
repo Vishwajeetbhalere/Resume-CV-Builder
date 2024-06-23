@@ -8,25 +8,27 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Level</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <input type="hidden" value={{request.user.cv.id}} id="cv_id">
-                        {% if user_skill %}
-                        {% for skill in user_skill %}
+                        {% if user_referee %}
+                        {% for ref in user_referee %}
                         <tr>
-                            <td>{{skill.s_name}}</td>
-                            <td>{{skill.s_level}}</td>
+                            <td>{{ref.r_name}}</td>
+                            <td>{{ref.r_email}}</td>
+                            <td>{{ref.r_phone}}</td>
                             
                             <td>
-                                <input class="btn btn-warning btn-sm btn-edit" data-id="{{skill.id}}" value="Edit" type="button">
+                                <input class="btn btn-warning btn-sm btn-edit-ref" data-id="{{ref.id}}" value="Edit" type="button">
                             </td>
 
                             <td>
-                                <input class="btn btn-danger btn-sm btn-delete" data-id="{{skill.id}}" value="Delete" type="button">
+                                <input class="btn btn-danger btn-sm btn-delete" data-id="{{ref.id}}" value="Delete" type="button">
                             </td>
                         </tr>
                         {% endfor %}
@@ -35,36 +37,34 @@
                 </table>
 
             </div>
-            <div id="save_skill_status"></div>
+            <div id="save_referee_status"></div>
             <br>
             <br>
 
-            <div class="update_skill_info" style="display:none;">
+            <div class=".update_referee_info" style="display:none;">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Level</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 
                                 
                             </tr>
                         </thead>
                         <tbody id="tbody">
-                            <input type="hidden" id="skill_id">
+                            <input type="hidden" id="referee_id">
                             <tr>
                                 <td>
                                     <input type="text" id="name" class="form-control"/>
                                 </td>
 
                                 <td>
-                                    <select name="level" id="level" class="form-control">
-                                        <option value="">Choose Your Level</option>
-                                        <option value="Beginner">Beginner</option>
-                                        <option value="Intermediate">Intermediate</option>
-                                        <option value="Advanced">Advanced</option>
-                                    </select>    
-
+                                    <input type="text" id="email" class="form-control"/>
+                                </td>
+                                <td>
+                                    <input type="text" id="phone" class="form-control"/>
                                 </td>
                                
                             </tr>
@@ -72,8 +72,8 @@
                         </tbody>
                     </table>
 
-                    <button class="btn btn-success" id="save_skill">Update</button>
-                    <button class="btn btn-info" id="close_skill">Close</button>
+                    <button class="btn btn-success" id="save_referee">Update</button>
+                    <button class="btn btn-info" id="close_referee">Close</button>
                 </div>
             </div>
 

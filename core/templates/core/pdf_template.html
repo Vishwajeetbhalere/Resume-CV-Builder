@@ -1,152 +1,235 @@
-    {% load static %}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CV</title>
-    <link rel="stylesheet" type="text/css" href=" {% static 'css/cv_template.css' %}">
-    </head>
-    <body>
-
-        <h1 class="cv_header">CURRICULUM VITAE(CV)</h1>
-        <div class="row" style="width: 100%; height: 100%; background-color: #c7c792;">
-
-
-            {% if user_profile %}
-            {% for profile in user_profile %}
-
-
-            {% if profile.avator %}
-
-                <img src="{{ profile.avator.url }}" style="width: 15%; height: 15%; margin: 5px 5px 5px 5px;" alt="no image">  
-
-            {% else %}
-
-            <img src="{% static 'img/avator.png' %}" style="width: 15%; height: 15%; margin: 5px 5px 5px 5px;" alt="no image">  
-
-
-            {% endif %}
-
-        <div  style="float: right; padding-right: 60%;">
-            <div class="basic-info">
-        <h1 >{{ profile.fname}} {{ profile.mname}} {{ profile.lname}}</h1>
-                
-        <p>{{ profile.occupation}}</p>
-        <p>{{ profile.country}} {{profile.region}}</p>
-        <p>{{ profile.email}}, {{profile.phone}}</p>
-
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        .cv-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .basic-info {
+            margin-bottom: 20px;
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Align items to left and right */
+            align-items: flex-start; /* Align items to the top */
+        }
+        .left-content {
+            flex: 1; /* Take up remaining space */
+        }
+        .right-content {
+            flex-shrink: 0; /* Don't shrink */
+            text-align: right; /* Align text to the right */
+        }
+        .name {
+            font-size: 32px; /* Increased font size for the name */
+            margin-bottom: 10px; /* Decreased margin bottom for the name */
+            color: #333; /* Color for the name */
+        }
+        .bio {
+            margin-top: 0;
+            line-height: 1.4; /* Adjusted line-height for the bio */
+        }
+        .section-wrapper {
+            margin-bottom: 20px;
+        }
+        .section-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .section-details {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .section-dates {
+            font-style: italic;
+            color: #999;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2; /* Alternate background color for table headers */
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Alternate background color for even rows */
+        }
+        .divider_line {
+            border: none;
+            border-top: 2px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-wrapper">
+        <div class="basic-info">
+            <div class="left-content">
+                {% if user_profile %}
+                    {% for profile in user_profile %}
+                        <h2 class="name">{{ profile.fname }} {{ profile.mname }} {{ profile.lname }}</h2>
+                        <p>{{ profile.occupation }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
-
-        
-            
+            <div class="right-content">
+                {% if user_profile %}
+                    {% for profile in user_profile %}
+                        <p>{{ profile.country }}, {{ profile.region }}</p>
+                        <p>{{ profile.email }} </p>
+                        <p>+91-{{ profile.phone }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-
-        </div>
-
-        
-        <hr class="divider_line"  style="color: #242424; border-top: medium double green; margin-top: 150px;"/>
-
-        <h1 style="margin: 0; padding-top: 25px;">Biography</h1>
-        <p class="bio">{{ profile.bio }}</p>
-
-
-        {% endfor %}
-        {% endif %}
-
-        <br/>
-        <br/>
-        <br/>
-
-
-        <h1 style="margin: 0;">My Skills</h1>
-        <table class="table" id="table_skill">
+        <hr class="divider_line">
+        <h2>About Me</h2>
+        <p class="bio">
+            {% if user_profile %}
+                {% for profile in user_profile %}
+                    {{ profile.bio }}
+                {% endfor %}
+            {% endif %}
+        </p>
+        <h2>Skills</h2>
+        <table class="table">
             <thead>
                 <tr>
-                    <th style="background-color: #0087C3; width: 10%;">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Level</th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Level</th>
                 </tr>
             </thead>
             <tbody>
                 {% if user_skill %}
-                {% for skill in user_skill %}
-
-
-                <tr>
-                    <th style="background-color: #0087C3; width: 10%;">{{ forloop.counter}}</th>
-                    <th scope="col">{{ skill.s_name }}</th>
-                    <th scope="col">{{ skill.s_level }}</th>
-                </tr>
-
-                {% endfor %}
+                    {% for skill in user_skill %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ skill.s_name }}</td>
+                            <td>{{ skill.s_level }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endif %}
             </tbody>
         </table>
-
-
-
-        <h1 style="margin: 0;">Education Background</h1>
-        <table class="table" id="table_skill">
+        <h2>Education</h2>
+        <table class="table">
             <thead>
                 <tr>
-                    <th style="background-color: #57B223; width: 10%;">#</th>
-                    <th scope="col">Institution</th>
-                    <th scope="col">Year</th>
-                    <th scope="col">Award</th>
+                    <th></th>
+                    <th>Institution Name</th>
+                    <th>Year</th>
+                    <th>Award/Percentage</th>
                 </tr>
             </thead>
             <tbody>
                 {% if user_education %}
-                {% for educa in user_education %}
-
-
-                <tr>
-                    <th style="background-color: #57B223; width: 10%;">{{ forloop.counter}}</th>
-                    <th scope="col">{{ educa.a_institution }}</th>
-                    <th scope="col">{{ educa.a_year }}</th>
-                    <th scope="col">{{ educa.a_award }}</th>
-                </tr>
-
-                {% endfor %}
+                    {% for educa in user_education %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ educa.a_institution }}</td>
+                            <td>{{ educa.a_year }}</td>
+                            <td>{{ educa.a_award }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endif %}
             </tbody>
         </table>
-
-
-
-
-        <h1 style="margin: 0;">Referees</h1>
-        <table class="table" id="table_skill">
+        <div class="section-wrapper">
+            <h2>Experience / Internship</h2>
+            {% if user_experience %}
+                {% for exper in user_experience %}
+                    <div class="section-item">
+                        <div class="section-title">{{ exper.e_office }}</div>
+                        <div class="section-details">{{ exper.e_position }}</div>
+                        <div class="section-details">{{ exper.e_responsibilities }}</div>
+                        <div class="section-dates">{{ exper.e_startdate }} - {{ exper.e_enddate }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <h2>Projects</h2>
+        <div class="section-wrapper">
+            {% if user_project %}
+                {% for proje in user_project %}
+                    <div class="section-item">
+                        <div class="section-title">{{ proje.p_projectname }}</div>
+                        <div class="section-details">{{ proje.p_description }}</div>
+                        <div class="section-dates">{{ proje.p_startdate }} - {{ proje.p_enddate }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <h2>Certificates</h2>
+        <table class="table">
             <thead>
                 <tr>
-                    <th style="background-color: #0087C3;">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
+                    <th></th>
+                    <th>Certificate</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if user_certificate %}
+                    {% for cer in user_certificate %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ cer.c_certificate }}</td>
+                            <td>{{ cer.c_year }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        <h2>Referees</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
                 </tr>
             </thead>
             <tbody>
                 {% if user_referee %}
-                {% for referee in user_referee %}
-
-
-                <tr>
-                    <th style="background-color: #0087C3;">{{ forloop.counter}}</th>
-                    <th scope="col">{{ referee.r_name }}</th>
-                    <th scope="col">{{ referee.r_email }}</th>
-                    <th scope="col">{{ referee.r_phone }}</th>
-
-                </tr>
-
-                {% endfor %}
+                    {% for ref in user_referee %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ ref.r_name }}</td>
+                            <td>{{ ref.r_email }}</td>
+                            <td>{{ ref.r_phone }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endif %}
             </tbody>
         </table>
-
-
-
-        <p style="padding-bottom: 150px;"></p>
-    </body>
-    </html>
+    </div>
+</body>
+</html>

@@ -24,14 +24,16 @@ class Skill(models.Model):
         return self.s_name
 
 
-class Experince(models.Model):
+class Experience(models.Model):
     cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    e_office = models.CharField(max_length=500)
-    e_position = models.CharField(max_length=500)
-    e_duration = models.CharField(max_length=500)
+    e_office = models.CharField(max_length=500, default='Head Office')
+    e_position = models.CharField(max_length=500,)
+    e_responsibilities = models.CharField(max_length=500)
+    e_startdate = models.DateField(null=True, blank=True)
+    e_enddate = models.DateField(null=True, blank=True)
 
-    def __str__(self):
-        return self.s_name
+    def __str__(self) -> str:
+        return self.e_office
 
 
 class Academic(models.Model):
@@ -76,3 +78,24 @@ class Profile(models.Model):
     def delete(self, *args, **kwargs):
         self.avator.delete()
         super().delete(*args, **kwargs)
+
+
+class Project(models.Model):
+    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
+    p_projectname = models.CharField(max_length=500)
+    p_description = models.TextField(
+        max_length=10000, help_text="Enter a brief description of the project")
+    p_startdate = models.DateField(null=True, blank=True)
+    p_enddate = models.DateField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.p_projectname
+
+
+class Certificate(models.Model):
+    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
+    c_certificate = models.CharField(max_length=500)
+    c_year = models.CharField(max_length=500)
+
+    def __str__(self) -> str:
+        return self.c_certificate

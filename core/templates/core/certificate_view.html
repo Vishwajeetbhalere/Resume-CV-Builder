@@ -7,26 +7,25 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Level</th>
+                            <th>Certificate</th>
+                            <th>Year</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <input type="hidden" value={{request.user.cv.id}} id="cv_id">
-                        {% if user_skill %}
-                        {% for skill in user_skill %}
+                        {% if user_certificate %}
+                        {% for cer in user_certificate %}
                         <tr>
-                            <td>{{skill.s_name}}</td>
-                            <td>{{skill.s_level}}</td>
-                            
+                            <td>{{cer.c_certificate}}</td>
+                            <td>{{cer.c_year}}</td>
                             <td>
-                                <input class="btn btn-warning btn-sm btn-edit" data-id="{{skill.id}}" value="Edit" type="button">
+                                <input class="btn btn-warning btn-sm btn-edit" data-id="{{cer.id}}" value="Edit" type="button">
                             </td>
 
                             <td>
-                                <input class="btn btn-danger btn-sm btn-delete" data-id="{{skill.id}}" value="Delete" type="button">
+                                <input class="btn btn-danger btn-sm btn-delete" data-id="{{cer.id}}" value="Delete" type="button">
                             </td>
                         </tr>
                         {% endfor %}
@@ -35,45 +34,38 @@
                 </table>
 
             </div>
-            <div id="save_skill_status"></div>
+            <div id="save_certificate_status"></div>
             <br>
             <br>
 
-            <div class="update_skill_info" style="display:none;">
+            <div class="update_certificate_info" style="display:none;">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Level</th>
-                                
-                                
+                                <th>Certificate</th>
+                                <th>Year</th>
                             </tr>
                         </thead>
                         <tbody id="tbody">
-                            <input type="hidden" id="skill_id">
+                            <input type="hidden" id="certificate_id">
                             <tr>
                                 <td>
-                                    <input type="text" id="name" class="form-control"/>
+                                    <input type="text" id="certificate" class="form-control"/>
                                 </td>
 
                                 <td>
-                                    <select name="level" id="level" class="form-control">
-                                        <option value="">Choose Your Level</option>
-                                        <option value="Beginner">Beginner</option>
-                                        <option value="Intermediate">Intermediate</option>
-                                        <option value="Advanced">Advanced</option>
-                                    </select>    
-
+                                    <input type="text" id="year" class="form-control"/>
                                 </td>
-                               
+                                
+
                             </tr>
 
                         </tbody>
                     </table>
 
-                    <button class="btn btn-success" id="save_skill">Update</button>
-                    <button class="btn btn-info" id="close_skill">Close</button>
+                    <button class="btn btn-success" id="save_certificate">Update</button>
+                    <button class="btn btn-info" id="close_certificate">Close</button>
                 </div>
             </div>
 

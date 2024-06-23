@@ -87,4 +87,4 @@ We welcome contributions! Please follow these steps to contribute:
 ## Acknowledgements
 
 - Thanks to the Django community for providing extensive documentation and support.
-- Special thanks to all contributors and users of this project.
+
