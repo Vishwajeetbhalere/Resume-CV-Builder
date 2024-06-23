@@ -22,25 +22,21 @@
         }
         .basic-info {
             margin-bottom: 20px;
-            display: flex; /* Use flexbox for layout */
-            justify-content: space-between; /* Align items to left and right */
-            align-items: flex-start; /* Align items to the top */
-        }
-        .left-content {
-            flex: 1; /* Take up remaining space */
-        }
-        .right-content {
-            flex-shrink: 0; /* Don't shrink */
-            text-align: right; /* Align text to the right */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .name {
-            font-size: 32px; /* Increased font size for the name */
-            margin-bottom: 10px; /* Decreased margin bottom for the name */
-            color: #333; /* Color for the name */
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .contact-info {
+            text-align: right;
         }
         .bio {
             margin-top: 0;
-            line-height: 1.4; /* Adjusted line-height for the bio */
+            line-height: 1.4;
         }
         .section-wrapper {
             margin-bottom: 20px;
@@ -63,6 +59,20 @@
         .section-dates {
             font-style: italic;
             color: #999;
+        }
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adjust spacing between skill boxes */
+            margin-bottom: 20px;
+        }
+        .skill-box {
+            background-color: #f2f2f2;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            color: #333;
         }
         .table {
             width: 100%;
@@ -90,23 +100,18 @@
 <body>
     <div class="cv-wrapper">
         <div class="basic-info">
-            <div class="left-content">
-                {% if user_profile %}
-                    {% for profile in user_profile %}
+            {% if user_profile %}
+                {% for profile in user_profile %}
+                    <div>
                         <h2 class="name">{{ profile.fname }} {{ profile.mname }} {{ profile.lname }}</h2>
                         <p>{{ profile.occupation }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="right-content">
-                {% if user_profile %}
-                    {% for profile in user_profile %}
+                    </div>
+                    <div class="contact-info">
                         <p>{{ profile.country }}, {{ profile.region }}</p>
-                        <p>{{ profile.email }} </p>
-                        <p>+91-{{ profile.phone }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                        <p>{{ profile.email }}, +91-{{ profile.phone }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         <hr class="divider_line">
         <h2>About Me</h2>
@@ -118,26 +123,13 @@
             {% endif %}
         </p>
         <h2>Skills</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Level</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if user_skill %}
-                    {% for skill in user_skill %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ skill.s_name }}</td>
-                            <td>{{ skill.s_level }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
+        <div class="skill-list">
+            {% if user_skill %}
+                {% for skill in user_skill %}
+                    <div class="skill-box">{{ skill.s_name }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
         <h2>Education</h2>
         <table class="table">
             <thead>
